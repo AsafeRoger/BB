@@ -1,11 +1,14 @@
 <?php
 
-require_once("Conta.php");
-require_once("ContaCorrente.php");
+require_once("Modelos/Conta.php");
+require_once("Modelos/ContaCorrente.php");
+require_once("Modelos/ContaPoupanca.php");
 
 // Criando algumas contas
-$conta1 = new ContaCorrente("Asafe", 1000, "1234567890"); // Conta 1
+$conta1 = new ContaPoupanca("Asafe", 1000, "1234567890"); // Conta 1
 $conta2 = new ContaCorrente("João Antonio", 500, "0987654321"); // Conta 2
+
+
 
 // Colocando as contas em um array
 $contas = [$conta1, $conta2];
@@ -63,16 +66,18 @@ do {
                 echo "Você precisa logar primeiro!\n";
             }
             break;
-        case 3:
-
-            $valorInvestido = readline("Quanto você deseja investir em Bitcoin? R$ ");
-            $contaPoupanca->investir($valorInvestido); 
-
-            // Exibe o rendimento do Bitcoin
-            echo "Bitcoin investido: R$ " . $contaPoupanca->getInvestimento() . "\n";
-            echo "Rendimento de Bitcoin (5% ao ano): R$ " . $contaPoupanca->calcularRendimento() . "\n";
+            case 3:
+                if ($contaLogada instanceof ContaPoupanca) {
+                    $valorInvestido = readline("Quanto você deseja investir em Bitcoin? R$ ");
+                    $contaLogada->investir($valorInvestido);
             
-            break;
+                    // Exibe o rendimento do Bitcoin
+                    echo "Bitcoin investido: R$ " . $contaLogada->getInvestimento() . "\n";
+                    echo "Rendimento de Bitcoin (5% ao ano): R$ " . $contaLogada->calcularRendimento() . "\n";
+                } else {
+                    echo "Você precisa logar primeiro!\n";
+                }
+                break;
 
         case 0:
             echo "Programa encerrado!\n";
