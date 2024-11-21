@@ -29,6 +29,12 @@ class ContaPoupanca extends Conta {
     public function getInvestimento()
     {
         return $this->investimento;
+
+
+    }
+
+       public function fazerPix($valor, $contaDestino) {
+        echo "Conta poupança não pode realizar PIX.\n";
     }
 
 
