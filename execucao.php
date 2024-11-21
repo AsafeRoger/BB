@@ -8,8 +8,6 @@ require_once("Modelos/ContaPoupanca.php");
 $conta1 = new ContaPoupanca("Asafe", 1000, "1234567890"); // Conta 1
 $conta2 = new ContaCorrente("João Antonio", 500, "0987654321"); // Conta 2
 
-
-
 // Colocando as contas em um array
 $contas = [$conta1, $conta2];
 
@@ -44,40 +42,50 @@ do {
 
         case 2:
             if ($contaLogada) {
-                // Fazer Pix
-                $chavePixDestino = readline("Digite a chave Pix do destinatário: ");
-                $valorPix = readline("Digite o valor do Pix: ");
+                if ($contaLogada instanceof ContaCorrente) {
+                    // Fazer Pix
+                    $chavePixDestino = readline("Digite a chave Pix do destinatário: ");
+                    $valorPix = readline("Digite o valor do Pix: ");
 
-                // Procurar a conta destino pela chave Pix
-                $contaDestino = null;
-                foreach ($contas as $conta) {
-                    if ($conta->getChavePix() === $chavePixDestino) {
-                        $contaDestino = $conta;
-                        break;
+                    // Procurar a conta destino pela chave Pix
+                    $contaDestino = null;
+                    foreach ($contas as $conta) {
+                        if ($conta->getChavePix() === $chavePixDestino) {
+                            $contaDestino = $conta;
+                            break;
+                        }
                     }
-                }
 
-                if ($contaDestino) {
-                    $contaLogada->Pix($valorPix, $contaDestino);
+                    if ($contaDestino) {
+                        $contaLogada->Pix($valorPix, $contaDestino);
+                    } else {
+                        echo "Chave Pix não encontrada.\n";
+                    }
                 } else {
-                    echo "Chave Pix não encontrada.\n";
+                    echo "Contas Poupança não podem fazer Pix.\n";
                 }
             } else {
                 echo "Você precisa logar primeiro!\n";
             }
             break;
-            case 3:
+
+        case 3:
+            if ($contaLogada) {
                 if ($contaLogada instanceof ContaPoupanca) {
+                    // Fazer Investimento
                     $valorInvestido = readline("Quanto você deseja investir em Bitcoin? R$ ");
                     $contaLogada->investir($valorInvestido);
-            
+
                     // Exibe o rendimento do Bitcoin
                     echo "Bitcoin investido: R$ " . $contaLogada->getInvestimento() . "\n";
                     echo "Rendimento de Bitcoin (5% ao ano): R$ " . $contaLogada->calcularRendimento() . "\n";
                 } else {
-                    echo "Você precisa logar primeiro!\n";
+                    echo "Contas Corrente não podem investir.\n";
                 }
-                break;
+            } else {
+                echo "Você precisa logar primeiro!\n";
+            }
+            break;
 
         case 0:
             echo "Programa encerrado!\n";
