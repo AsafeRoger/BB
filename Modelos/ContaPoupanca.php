@@ -6,20 +6,20 @@ class ContaPoupanca extends Conta {
 
     private $investimento = 0;
 
-    // Método para investir um valor, retirando-o do saldo principal
+    //investe um valor tirando ele do saldo principal 
     public function investir($valor) {
         if ($valor > 0 && $this->saldo >= $valor) {
             $this->investimento += $valor;
-            $this->saldo -= $valor; // Deduz do saldo principal
+            $this->saldo -= $valor; 
             echo "Investimento de R$ $valor realizado com sucesso!\n";
         } else {
             echo "Saldo insuficiente ou valor inválido para investimento.\n";
         }
     }
 
-    // Método para calcular o rendimento diretamente
+    //calcular quanto vai render ao ano 
     public function calcularRendimento() {
-        $percentualRendimento = 0.05; // 5% de rendimento
+        $percentualRendimento = 0.05; 
         return $this->investimento * $percentualRendimento;
     }
 
@@ -33,9 +33,7 @@ class ContaPoupanca extends Conta {
 
     }
 
-       public function fazerPix($valor, $contaDestino) {
-        echo "Conta poupança não pode realizar PIX.\n";
-    }
+
 
 
 }
