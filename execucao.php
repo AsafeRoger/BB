@@ -16,15 +16,14 @@ do {
     echo "\n-----------MENU-----------\n";
     echo "1- Logar Conta\n";
     echo "2- Fazer Pix\n";
+    echo "3- Fazer Investimento\n";
     echo "0- SAIR\n";
     $opcao = readline("Escolha a opção: ");
 
     switch ($opcao) {
         case 1:
             $nomeInserido = readline("Digite o nome: ");
-            $senhaInserida = readline("Digite sua senha: ");
-            
-            // Simulando o login de uma conta (simplificado, sem senha)
+
             $contaLogada = null;
             foreach ($contas as $conta) {
                 if ($conta->getNome() === $nomeInserido) {
@@ -34,7 +33,7 @@ do {
             }
 
             if ($contaLogada) {
-                echo "Bem-vindo, {$contaLogada->getNome()}!\n";
+                echo "Bem-vindo!\n";
             } else {
                 echo "Conta não encontrada.\n";
             }
@@ -64,6 +63,16 @@ do {
                 echo "Você precisa logar primeiro!\n";
             }
             break;
+        case 3:
+
+            $valorInvestido = readline("Quanto você deseja investir em Bitcoin? R$ ");
+            $contaPoupanca->investir($valorInvestido); 
+
+            // Exibe o rendimento do Bitcoin
+            echo "Bitcoin investido: R$ " . $contaPoupanca->getInvestimento() . "\n";
+            echo "Rendimento de Bitcoin (5% ao ano): R$ " . $contaPoupanca->calcularRendimento() . "\n";
+            
+            break;
 
         case 0:
             echo "Programa encerrado!\n";
@@ -73,7 +82,4 @@ do {
             echo "Opção inválida.\n";
             break;
     }
-
 } while ($opcao != 0);
-
-?>
