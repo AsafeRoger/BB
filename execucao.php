@@ -1,76 +1,79 @@
 <?php
 
-require_once("modelos/Conta.php");
-require_once("modelos/ContaCorrente.php");
-require_once("modelos/ContaPoupanca.php");
+require_once("Conta.php");
+require_once("ContaCorrente.php");
 
-//Contas existentes no banco 
+// Criando algumas contas
+$conta1 = new ContaCorrente("Asafe", 1000, "1234567890"); // Conta 1
+$conta2 = new ContaCorrente("João Antonio", 500, "0987654321"); // Conta 2
 
-$conta1 = new Conta();
-$conta1->setNome("Asafe");
-$conta1->setSenha("asafe123");
-$conta1->setCPF("123.234.345.56");
-$poupança1 = new ContaPoupança;
-$poupança1 ->setSaldo(10000);
-$corrente1 = new ContaCorrente;
-$corrente1 ->setSaldo(100000);
-$contas[] = $conta1;
+// Colocando as contas em um array
+$contas = [$conta1, $conta2];
 
-$conta2 = new Conta();
-$conta2->setNome("João Antonio");
-$conta2->setSenha("khateli123");
-$conta2->setCPF("123.456.789.10");
-$poupança2 = new ContaPoupança;
-$poupança2 ->setSaldo(90000);
-$corrente2 = new ContaCorrente;
-$corrente2 ->setSaldo(200);
-$contas[] = $conta2;
-
-
-
-
+// Menu Principal
 $opcao = 0;
 do {
     echo "\n-----------MENU-----------\n";
     echo "1- Logar Conta\n";
-    echo "2- Criar Conta\n";
+    echo "2- Fazer Pix\n";
     echo "0- SAIR\n";
     $opcao = readline("Escolha a opção: ");
 
     switch ($opcao) {
-        case 0:
-            echo "Programa encerrado!\n";
-            break;
-            $loginValido = false;
-            while (!$loginValido) {
-                $nomeInserido = readline("Digite o nome: ");
-                $senhaInserida = readline("Digite sua senha: ");
-
-                // Verifica as credenciais
-                foreach ($contas as $conta) {
-                    if ($conta->getNome() === $nomeInserido && $conta->getSenha() === $senhaInserida) {
-                        echo "Login realizado com sucesso! Bem-vindo, {$conta->getNome()}!\n";
-                        $loginValido = true;
-                        break;
-                    }
-                }
-
-                if (!$loginValido) {
-                    echo "Nome ou senha inválidos.\n";
-                    $tentarNovamente = readline("Deseja tentar novamente? (s/n): ");
-                    if ($tentarNovamente !== 's') {
-                        echo "Saindo...\n";
-                        break;
-                    }
+        case 1:
+            $nomeInserido = readline("Digite o nome: ");
+            $senhaInserida = readline("Digite sua senha: ");
+            
+            // Simulando o login de uma conta (simplificado, sem senha)
+            $contaLogada = null;
+            foreach ($contas as $conta) {
+                if ($conta->getNome() === $nomeInserido) {
+                    $contaLogada = $conta;
+                    break;
                 }
             }
-            break;
+
+            if ($contaLogada) {
+                echo "Bem-vindo, {$contaLogada->getNome()}!\n";
+            } else {
+                echo "Conta não encontrada.\n";
+            }
             break;
 
         case 2:
+            if ($contaLogada) {
+                // Fazer Pix
+                $chavePixDestino = readline("Digite a chave Pix do destinatário: ");
+                $valorPix = readline("Digite o valor do Pix: ");
 
+                // Procurar a conta destino pela chave Pix
+                $contaDestino = null;
+                foreach ($contas as $conta) {
+                    if ($conta->getChavePix() === $chavePixDestino) {
+                        $contaDestino = $conta;
+                        break;
+                    }
+                }
 
+                if ($contaDestino) {
+                    $contaLogada->Pix($valorPix, $contaDestino);
+                } else {
+                    echo "Chave Pix não encontrada.\n";
+                }
+            } else {
+                echo "Você precisa logar primeiro!\n";
+            }
             break;
+
+        case 0:
+            echo "Programa encerrado!\n";
+            break;
+
         default:
+            echo "Opção inválida.\n";
+            break;
     }
+
 } while ($opcao != 0);
+
+?>
